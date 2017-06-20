@@ -1,0 +1,6 @@
+- hosts: djangohost
+  user: root
+  roles:
+    - apache
+    - pgdb
+    - django

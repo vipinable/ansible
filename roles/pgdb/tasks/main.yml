@@ -1,0 +1,28 @@
+- name: Install PostgreSQL database
+  yum: 
+     name: "{{ item }}"
+     state: latest
+  with_items:
+     - postgresql-server
+     - postgresql-contrib
+  register: installed
+
+- name: Initialize PostgreSQL database 
+  shell: /usr/bin/postgresql-setup initdb
+  when: installed.changed
+
+- name: Enable and start PostgreSQL database servive
+  service:
+     name: postgresql
+     enabled: yes
+     state: started
+
+- name: Configure password authentication
+  copy:
+     src: pg_hba.conf
+     dest: /var/lib/pgsql/data/pg_hba.conf
+     owner: postgres
+     group: postgres
+     mode: 0400
+  notify:
+     - restartdb

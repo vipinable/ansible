@@ -1,0 +1,34 @@
+- name: Install required packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - epel-release
+    - python-pip
+    - mod_wsgi
+
+- name: Install required python libraries
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - pip
+    - psycopg2
+
+- name: Install Django 
+  pip:
+    name: django
+    version: 1.11
+
+- name: Create Database for django App
+  postgresql_db:
+    name: djappsdb
+    login_host: localhost
+    encoding: UTF8
+
+- name: Configure Database user for django
+  postgresql_user:
+    db: djappsdb
+    name: djadmin
+    password: kTV2P7kuG
+    priv: ALL

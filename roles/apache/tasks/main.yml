@@ -1,0 +1,11 @@
+- name: install the latest version of Apache
+  yum:
+    name: httpd
+    state: latest
+
+- name: Copy httpd configuration
+  copy:
+     src: httpd.conf
+     dest: /etc/httpd/conf/httpd.conf
+  notify:
+    - restartHttpd
