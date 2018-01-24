@@ -14,6 +14,7 @@
   with_items:
     - pip
     - psycopg2
+    - jinja2
 
 - name: Install Django 
   pip:
