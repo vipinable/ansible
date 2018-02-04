@@ -1,0 +1,11 @@
+- name: Install supporting packages 
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - gcc
+    - python-devel
+    - openssl
+- name: Google Cloud Client Library for Python 
+  pip:
+    name: google-cloud 

@@ -1,0 +1,4 @@
+- hosts: cos7web-01p.agss.net
+  user: root
+  tasks:
+     - include: tasks_gcloud.yml
