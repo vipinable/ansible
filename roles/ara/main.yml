@@ -1,0 +1,13 @@
+- name: Install dependency packages
+  yum: 
+    name:
+     - gcc
+     - python-devel
+     - libffi-devel
+     - openssl-devel
+     - redhat-rpm-config
+    state: latest
+
+- name: Install ara using pip
+  pip:
+    name: ara

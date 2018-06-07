@@ -1,0 +1,4 @@
+- name: Configure haproxy hosts
+  hosts: hapxy
+  roles:
+  - hapxy

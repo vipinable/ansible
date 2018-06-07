@@ -1,0 +1,57 @@
+- name: Add elastic search repository
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Install java 
+  yum:
+     name: java-1.8.0-openjdk
+     state: present
+
+- name: Install Elastic search package
+  yum:
+     name: elasticsearch
+     state: present
+
+- name: System tuning - sysctl
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    ignoreerrors: yes
+  with_items:
+    - { name: vm.swappiness, value:  1 }
+    - { name: vm.max_map_count, value: 262144}
+
+- name: System tuning - pam_limits
+  pam_limits:
+    domain: '*'
+    limit_item: "{{ item.name }}"
+    value: "{{ item.value }}"
+    limit_type: hard
+    backup: yes
+  with_items:
+    - { name: nproc, value: 4096 }
+    - { name: nofile, value: 65536 }
+    - { name: fsize, value: unlimited }
+    - { name: as, value: unlimited }
+
+- name: Copy over dynamic configs
+  template:
+     src: '{{ item.src }}'
+     dest: '{{ item.dest }}'
+  with_items:
+     - { src: etc_elasticsearch_elasticsearch.yml.j2, dest: /etc/elasticsearch/elasticsearch.yml }
+     - { src: etc_sysconfig_elasticsearch.j2, dest: /etc/sysconfig/elasticsearch }
+
+- name: Add iptables rules
+  copy:
+    src: iptables
+    dest: /etc/sysconfig/iptables
+  notify:
+    - reloadIptables
+
+- name: Enable and start service
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes

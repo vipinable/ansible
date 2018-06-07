@@ -1,0 +1,20 @@
+- name: Add elastic search repository
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Install Elastic beat package
+  yum:
+     name: metricbeat
+     state: present
+
+- name: Copy over configs
+  copy:
+     src: metricbeat.yml
+     dest: /etc/metricbeat/metricbeat.yml
+
+- name: Enable and start service
+  service:
+    name: metricbeat
+    state: started
+    enabled: yes

@@ -1,0 +1,22 @@
+gslb_pool_port_all: p_escl01_all_9200:9200
+gslb_pool_port_local: p_escl01_central_9200:9200
+gslb_datacenter: ndcchicago
+gslb_args: --nodep 
+
+
+iptables_group: elasticsearch.{{config_environment}}
+iptablesDynamicRole:
+  - { chain: "NODES", protocol: "tcp", ports: ['9200','9300'], jump: "ACCEPT", sourceGroups: ['all_esdata'] }
+
+iptablesStaticRole:
+  - '-A INPUT -m state --state NEW -s 172.28.216.0/21 -p tcp --dport 9200 -m comment --comment "access for scality nodes" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 10.0.0.0/8 -p tcp --dport 9200 -m comment --comment "access for scality nodes" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 68.87.66.201/32 -p tcp -m multiport --dports 9200 -m comment --comment "Accept GSLB health check" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 69.252.205.5/32 -p tcp -m multiport --dports 9200 -m comment --comment "Accept GSLB health check" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 69.252.205.6/32 -p tcp -m multiport --dports 9200 -m comment --comment "Accept GSLB health check" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 76.96.53.47/32 -p tcp -m multiport --dports 9200 -m comment --comment "Accept GSLB health check" -j ACCEPT'
+  - '-A INPUT -m state --state NEW -s 96.114.121.198/32 -p tcp -m multiport --dports 9200 -m comment --comment "Accept GSLB health check" -j ACCEPT'
+
+ip6tablesDynamicRole: []
+
+ip6tablesStaticRole: [] 
