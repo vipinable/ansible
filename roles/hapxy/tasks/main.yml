@@ -3,6 +3,11 @@
     name: haproxy
     state: present
 
+- name: Install lighttpd package
+  yum:
+    name: lighttpd
+    state: present
+
 - name: Copy haproxy config file
   copy:
     src: haproxy.cfg
@@ -15,4 +20,4 @@
     src: iptables
     dest: /etc/sysconfig/iptables
   notify:
-    - reloadIptables
+  - reloadIptables
