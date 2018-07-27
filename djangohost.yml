@@ -1,6 +1,6 @@
 - hosts: djangohost
   user: root
   roles:
-    - apache
-    - pgdb
-    - django
+    - { role: apache, tags: ['apache'] }
+    - { role: pgdb, tags: ['db'] }
+    - { role: django, tags: ['app'] }

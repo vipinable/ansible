@@ -8,6 +8,11 @@
     name: lighttpd
     state: present
 
+- name: Copy SSL certificate  file
+  copy:
+    src: twm-selfsigned.pem
+    dest: /etc/ssl/certs/twm-selfsigned.pem
+
 - name: Copy haproxy config file
   copy:
     src: haproxy.cfg

@@ -15,6 +15,7 @@
     - pip
     - psycopg2
     - jinja2
+    - django-contrib-comments
 
 - name: Install Django 
   pip:
@@ -33,3 +34,10 @@
     name: djadmin
     password: kTV2P7kuG
     priv: ALL
+
+- name: Copy over apache config
+  copy: 
+    src: theworkingmethodsdotcom.conf
+    dest: /etc/httpd/conf.d/theworkingmethodsdotcom.conf
+  tags:
+  - apache
