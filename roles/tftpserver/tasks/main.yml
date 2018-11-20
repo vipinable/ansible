@@ -1,0 +1,22 @@
+- name: Install tftp server and syslinux
+  yum:
+    name: 
+    - tftp-server
+    - syslinux
+    state: latest
+
+- name: Create config directory
+  file: 
+    path: /var/lib/tftpboot/pxelinux.cfg
+    state: directory
+
+- name: Copy over tftp config file
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: "{{ item.remote }}"
+  with_items:
+  - { src: tftp, dest: /etc/xinetd.d/tftp, remote: no }
+  - { src: default, dest: /var/lib/tftpboot/pxelinux.cfg/default, remote: no }
+  - { src: boot.msg, dest: /var/lib/tftpboot/boot.msg, remote: no }
+  - { src: /usr/share/syslinux/pxelinux.0, dest: /var/lib/tftpboot/pxelinux.0, remote: yes }
