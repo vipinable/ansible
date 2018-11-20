@@ -2,3 +2,9 @@
   hosts: hapxy
   roles:
   - hapxy
+
+- name: Configure sysmgr host
+  hosts: sysmgr
+  connection: local
+  roles:
+  - tftpserver
